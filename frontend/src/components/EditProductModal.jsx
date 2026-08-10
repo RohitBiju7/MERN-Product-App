@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const EditProductModal = ({ product, onClose, onProductUpdated }) => {
   const [formData, setFormData] = useState({
@@ -19,7 +19,7 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
     setError(null);
 
     try {
-      const res = await axios.put(`http://localhost:3000/products/${product._id}`, {
+      const res = await api.put(`/products/${product._id}`, {
         ...formData,
         price: Number(formData.price),
         rating: Number(formData.rating)
@@ -32,6 +32,16 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
     }
   };
 
+  const inputStyle = {
+    width: '100%',
+    padding: '8px',
+    borderRadius: '6px',
+    border: '1px solid var(--border-color)',
+    backgroundColor: 'var(--input-bg)',
+    color: 'var(--text-main)',
+    outline: 'none'
+  };
+
   return (
     <div style={{
       position: 'fixed',
@@ -39,64 +49,64 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
       left: 0,
       width: '100vw',
       height: '100vh',
-      backgroundColor: 'rgba(0,0,0,0.5)',
+      backgroundColor: 'rgba(0,0,0,0.6)',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 1000
     }}>
       <div style={{
-        backgroundColor: '#ffffff',
+        backgroundColor: 'var(--card-bg)',
         padding: '2rem',
         borderRadius: '8px',
         width: '100%',
         maxWidth: '500px',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+        boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
+        border: '1px solid var(--border-color)'
       }}>
-        <h3 style={{ marginBottom: '1rem', color: '#1e293b' }}>Edit Product</h3>
+        <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>Edit Product</h3>
         
         {error && <p style={{ color: '#ef4444', marginBottom: '1rem' }}>{error}</p>}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Title</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Title</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              style={inputStyle}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Price ($)</label>
-            <input
+<label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Price ($)</label>            <input
               type="number"
               step="0.01"
               name="price"
               value={formData.price}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              style={inputStyle}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Image URL</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Image URL</label>
             <input
               type="url"
               name="image"
               value={formData.image}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              style={inputStyle}
             />
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Rating (0 - 5)</label>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Rating (0 - 5)</label>
             <input
               type="number"
               step="0.1"
@@ -104,7 +114,7 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
               value={formData.rating}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+              style={inputStyle}
             />
           </div>
 
@@ -115,8 +125,9 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
               style={{
                 padding: '8px 16px',
                 borderRadius: '6px',
-                border: '1px solid #cbd5e1',
-                backgroundColor: '#ffffff',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'var(--bg-main)',
+                color: 'var(--text-main)',
                 cursor: 'pointer'
               }}
             >

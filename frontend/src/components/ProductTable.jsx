@@ -2,14 +2,21 @@ import React from 'react';
 
 const ProductTable = ({ products, onDelete, onEdit, activeSource }) => {
   if (!products || products.length === 0) {
-    return <p style={{ textAlign: 'center', marginTop: '2rem' }}>No products found.</p>;
+    return <p style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--text-muted)' }}>No products found.</p>;
   }
 
   return (
     <div style={{ overflowX: 'auto', marginTop: '1.5rem' }}>
-      <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: '8px', overflow: 'hidden' }}>
+      <table style={{
+        width: '100%',
+        borderCollapse: 'collapse',
+        background: 'var(--card-bg)',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        border: '1px solid var(--border-color)'
+      }}>
         <thead>
-          <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
+          <tr style={{ backgroundColor: 'var(--table-header-bg)', textAlign: 'left', color: 'var(--text-main)' }}>
             <th style={{ padding: '12px' }}>Image</th>
             <th style={{ padding: '12px' }}>Title</th>
             <th style={{ padding: '12px' }}>Price</th>
@@ -21,9 +28,13 @@ const ProductTable = ({ products, onDelete, onEdit, activeSource }) => {
           {products.map((product) => {
             const rating = typeof product.rating === 'object' ? product.rating.rate : product.rating;
             return (
-              <tr key={product._id || product.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+              <tr key={product._id || product.id} style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-main)' }}>
                 <td style={{ padding: '12px' }}>
-                  <img src={product.image} alt={product.title} style={{ width: '50px', height: '50px', objectFit: 'contain' }} />
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    style={{ width: '50px', height: '50px', objectFit: 'contain', backgroundColor: '#ffffff', padding: '4px', borderRadius: '4px' }}
+                  />
                 </td>
                 <td style={{ padding: '12px', fontWeight: '500' }}>{product.title}</td>
                 <td style={{ padding: '12px', color: '#4f46e5', fontWeight: 'bold' }}>${Number(product.price).toFixed(2)}</td>

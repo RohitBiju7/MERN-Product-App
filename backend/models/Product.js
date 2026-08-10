@@ -1,41 +1,37 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const productSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: [true, "Title is required"],
-      minlength: [5, "Title must be at least 5 characters"],
-      maxlength: [100, "Title cannot exceed 100 characters"],
-      trim: true,
-    },
-    price: {
-      type: Number,
-      required: [true, "Price is required"],
-      min: [0.01, "Price must be greater than 0"],
-    },
-    image: {
-      type: String,
-      required: [true, "Image URL is required"],
-      validate: {
-        validator: function (v) {
-          return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(
-            v,
-          );
-        },
-        message: (props) => `${props.value} is not a valid URL!`,
+const productSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, 'Title is required'],
+    trim: true,
+  },
+  price: {
+    type: Number,
+    required: [true, 'Price is required'],
+    min: [0, 'Price cannot be negative'],
+  },
+  image: {
+    type: String,
+    required: [true, 'Image URL is required'],
+    validate: {
+      validator: function (v) {
+        try {
+          new URL(v); // Parses any standard HTTP/HTTPS URL safely
+          return true;
+        } catch (err) {
+          return false;
+        }
       },
-    },
-    rating: {
-      type: Number,
-      required: [true, "Rating is required"],
-      min: [0, "Rating cannot be less than 0"],
-      max: [5, "Rating cannot be more than 5"],
+      message: (props) => `${props.value} is not a valid URL!`,
     },
   },
-  {
-    timestamps: true,
+  rating: {
+    type: Number,
+    default: 0,
+    min: [0, 'Rating must be at least 0'],
+    max: [5, 'Rating cannot exceed 5'],
   },
-);
+}, { timestamps: true });
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model('Product', productSchema);

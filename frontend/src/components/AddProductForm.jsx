@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const AddProductForm = ({ onProductAdded }) => {
   const [formData, setFormData] = useState({
@@ -21,8 +21,7 @@ const AddProductForm = ({ onProductAdded }) => {
     setSuccess(null);
 
     try {
-      // Send data to backend
-      const res = await axios.post('http://localhost:3000/products', {
+      const res = await api.post('/products', {
         ...formData,
         price: Number(formData.price),
         rating: Number(formData.rating)
@@ -31,7 +30,6 @@ const AddProductForm = ({ onProductAdded }) => {
       setSuccess('Product added successfully!');
       setFormData({ title: '', price: '', image: '', rating: '' });
       
-      // Refresh parent list
       if (onProductAdded) {
         onProductAdded(res.data);
       }
@@ -40,22 +38,32 @@ const AddProductForm = ({ onProductAdded }) => {
     }
   };
 
+  const inputStyle = {
+    width: '100%',
+    padding: '8px',
+    borderRadius: '6px',
+    border: '1px solid var(--border-color)',
+    backgroundColor: 'var(--input-bg)',
+    color: 'var(--text-main)',
+    outline: 'none'
+  };
+
   return (
     <div style={{
-      backgroundColor: '#ffffff',
+      backgroundColor: 'var(--card-bg)',
       padding: '1.5rem',
       borderRadius: '8px',
-      border: '1px solid #e2e8f0',
+      border: '1px solid var(--border-color)',
       marginBottom: '2rem'
     }}>
-      <h3 style={{ marginBottom: '1rem', color: '#1e293b' }}>Add New Product (MongoDB)</h3>
+      <h3 style={{ marginBottom: '1rem', color: 'var(--text-main)' }}>Add New Product (MongoDB)</h3>
       
       {error && <p style={{ color: '#ef4444', marginBottom: '1rem' }}>{error}</p>}
       {success && <p style={{ color: '#10b981', marginBottom: '1rem' }}>{success}</p>}
 
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Title</label>
+          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Title</label>
           <input
             type="text"
             name="title"
@@ -63,12 +71,12 @@ const AddProductForm = ({ onProductAdded }) => {
             onChange={handleChange}
             placeholder="Product Title (min 5 chars)"
             required
-            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+            style={inputStyle}
           />
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Price ($)</label>
+          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Price ($)</label>
           <input
             type="number"
             step="0.01"
@@ -77,12 +85,12 @@ const AddProductForm = ({ onProductAdded }) => {
             onChange={handleChange}
             placeholder="0.00"
             required
-            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+            style={inputStyle}
           />
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Image URL</label>
+          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Image URL</label>
           <input
             type="url"
             name="image"
@@ -90,12 +98,12 @@ const AddProductForm = ({ onProductAdded }) => {
             onChange={handleChange}
             placeholder="https://..."
             required
-            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+            style={inputStyle}
           />
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px' }}>Rating (0 - 5)</label>
+          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Rating (0 - 5)</label>
           <input
             type="number"
             step="0.1"
@@ -104,7 +112,7 @@ const AddProductForm = ({ onProductAdded }) => {
             onChange={handleChange}
             placeholder="4.5"
             required
-            style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+            style={inputStyle}
           />
         </div>
 

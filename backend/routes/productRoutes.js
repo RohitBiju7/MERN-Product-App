@@ -1,6 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Product = require('../models/Product');
+
+// @route   GET /products/health
+// @desc    Check MongoDB connection status
+router.get('/health', (req, res) => {
+  const state = mongoose.connection.readyState;
+  const states = ['Disconnected', 'Connected', 'Connecting', 'Disconnecting'];
+
+  if (state === 1) {
+    return res.status(200).json({ status: 'OK', database: states[state] });
+  }
+
+  return res.status(503).json({ status: 'ERROR', database: states[state] });
+});
 
 // @route   GET /products
 // @desc    Get all products from MongoDB
@@ -33,7 +47,7 @@ router.put('/:id', async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true } // Fixed deprecation warning
     );
     
     if (!updatedProduct) {

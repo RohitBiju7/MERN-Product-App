@@ -1,34 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Navbar from './components/Navbar';
-import ProductList from './components/ProductList';
-import ProductTable from './components/ProductTable';
-import AddProductForm from './components/AddProductForm';
-import EditProductModal from './components/EditProductModal';
+import React, { useState, useEffect } from "react";
+import api from "./api";
+import Navbar from "./components/Navbar";
+import ProductList from "./components/ProductList";
+import ProductTable from "./components/ProductTable";
+import AddProductForm from "./components/AddProductForm";
+import EditProductModal from "./components/EditProductModal";
 
 function App() {
-  const [activeSource, setActiveSource] = useState('mongodb');
-  const [viewMode, setViewMode] = useState('cards');
+  const [activeSource, setActiveSource] = useState("mongodb");
+  const [viewMode, setViewMode] = useState("cards");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  // State for tracking product being edited
   const [editingProduct, setEditingProduct] = useState(null);
+
+  // Dark Mode State
+  const [darkMode, setDarkMode] = useState(() => {
+  const savedMode = localStorage.getItem("darkMode");
+  return savedMode === "true"; // Explicitly check for true string
+});
+
+  // Toggle dark class on <body> tag whenever darkMode state updates
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
     try {
       let response;
-      if (activeSource === 'mongodb') {
-        response = await axios.get('http://localhost:3000/products');
+      if (activeSource === "mongodb") {
+        response = await api.get("/products");
       } else {
-        response = await axios.get('https://fakestoreapi.com/products');
+        response = await api.get("https://fakestoreapi.com/products");
       }
       setProducts(response.data);
     } catch (err) {
-      setError(err.message || 'Error fetching products');
+      setError(err.message || "Error fetching products");
     } finally {
       setLoading(false);
     }
@@ -44,58 +58,88 @@ function App() {
 
   const handleProductUpdated = (updatedProduct) => {
     setProducts((prevProducts) =>
-      prevProducts.map((item) => (item._id === updatedProduct._id ? updatedProduct : item))
+      prevProducts.map((item) =>
+        item._id === updatedProduct._id ? updatedProduct : item,
+      ),
     );
   };
 
   const handleDeleteProduct = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
+    if (!window.confirm("Are you sure you want to delete this product?"))
+      return;
 
     try {
-      await axios.delete(`http://localhost:3000/products/${id}`);
-      setProducts((prevProducts) => prevProducts.filter((item) => item._id !== id));
+      await api.delete(`/products/${id}`);
+      setProducts((prevProducts) =>
+        prevProducts.filter((item) => item._id !== id),
+      );
     } catch (err) {
-      alert('Failed to delete product: ' + (err.response?.data?.message || err.message));
+      alert(
+        "Failed to delete product: " +
+          (err.response?.data?.message || err.message),
+      );
     }
   };
 
   return (
     <div>
-      <Navbar activeSource={activeSource} setActiveSource={setActiveSource} />
-      
+      <Navbar
+        activeSource={activeSource}
+        setActiveSource={setActiveSource}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
+
       <main className="container">
-        {activeSource === 'mongodb' && (
+        {activeSource === "mongodb" && (
           <AddProductForm onProductAdded={handleProductAdded} />
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
           <h2>
-            {activeSource === 'mongodb' ? 'MongoDB Stored Products' : 'Fake Store API Products'}
+            {activeSource === "mongodb"
+              ? "MongoDB Stored Products"
+              : "Fake Store API Products"}
           </h2>
           <div>
             <button
               type="button"
-              onClick={() => setViewMode('cards')}
+              onClick={() => setViewMode("cards")}
               style={{
-                marginRight: '8px',
-                padding: '6px 12px',
-                borderRadius: '4px',
-                border: '1px solid #cbd5e1',
-                backgroundColor: viewMode === 'cards' ? '#e2e8f0' : '#fff',
-                cursor: 'pointer'
+                marginRight: "8px",
+                padding: "6px 12px",
+                borderRadius: "4px",
+                border: "1px solid var(--border-color)",
+                backgroundColor:
+                  viewMode === "cards"
+                    ? "var(--border-color)"
+                    : "var(--card-bg)",
+                color: "var(--text-main)",
+                cursor: "pointer",
               }}
             >
               Card View
             </button>
             <button
               type="button"
-              onClick={() => setViewMode('table')}
+              onClick={() => setViewMode("table")}
               style={{
-                padding: '6px 12px',
-                borderRadius: '4px',
-                border: '1px solid #cbd5e1',
-                backgroundColor: viewMode === 'table' ? '#e2e8f0' : '#fff',
-                cursor: 'pointer'
+                padding: "6px 12px",
+                borderRadius: "4px",
+                border: "1px solid var(--border-color)",
+                backgroundColor:
+                  viewMode === "table"
+                    ? "var(--border-color)"
+                    : "var(--card-bg)",
+                color: "var(--text-main)",
+                cursor: "pointer",
               }}
             >
               Table View
@@ -104,10 +148,11 @@ function App() {
         </div>
 
         {loading && <p>Loading products...</p>}
-        {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+        {error && <p style={{ color: "red" }}>Error: {error}</p>}
 
-        {!loading && !error && (
-          viewMode === 'cards' ? (
+        {!loading &&
+          !error &&
+          (viewMode === "cards" ? (
             <ProductList
               products={products}
               onDelete={handleDeleteProduct}
@@ -120,11 +165,9 @@ function App() {
               onEdit={(prod) => setEditingProduct(prod)}
               activeSource={activeSource}
             />
-          )
-        )}
+          ))}
       </main>
 
-      {/* Render Edit Modal when editingProduct is set */}
       {editingProduct && (
         <EditProductModal
           product={editingProduct}
