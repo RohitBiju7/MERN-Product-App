@@ -1,0 +1,7 @@
+# Ignore .env files everywhere (root, backend, frontend, etc.)
+.env
+.env.*
+!.env.example
+
+# Ignore Node dependencies
+node_modules/
