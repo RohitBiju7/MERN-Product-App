@@ -67,7 +67,7 @@ const Navbar = ({ activeSource, setActiveSource, darkMode, setDarkMode }) => {
             gap: '6px'
           }}
         >
-          {darkMode ? '☀️ Light' : '🌙 Dark'}
+          {darkMode ? '🌙 Dark' : '☀️ Light'}
         </button>
       </div>
     </nav>
