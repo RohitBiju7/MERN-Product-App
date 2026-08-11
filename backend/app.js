@@ -15,6 +15,10 @@ mongoose.set('bufferCommands', false);
 connectDB();
 
 const app = express();
+
+// Disable X-Powered-By header to prevent disclosing version/framework info
+app.disable('x-powered-by');
+
 const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
 
 // Enable CORS for Vite frontend

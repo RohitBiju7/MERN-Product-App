@@ -16,12 +16,7 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Image URL is required'],
     validate: {
       validator: function (v) {
-        try {
-          new URL(v); // Parses any standard HTTP/HTTPS URL safely
-          return true;
-        } catch (err) {
-          return false;
-        }
+        return URL.canParse(v);
       },
       message: (props) => `${props.value} is not a valid URL!`,
     },

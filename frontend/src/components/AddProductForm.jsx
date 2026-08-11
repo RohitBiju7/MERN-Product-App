@@ -63,8 +63,9 @@ const AddProductForm = ({ onProductAdded }) => {
 
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Title</label>
+          <label htmlFor="title" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Title</label>
           <input
+            id="title"
             type="text"
             name="title"
             value={formData.title}
@@ -76,8 +77,9 @@ const AddProductForm = ({ onProductAdded }) => {
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Price ($)</label>
+          <label htmlFor="price" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Price ($)</label>
           <input
+            id="price"
             type="number"
             step="0.01"
             name="price"
@@ -90,8 +92,9 @@ const AddProductForm = ({ onProductAdded }) => {
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Image URL</label>
+          <label htmlFor="image" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Image URL</label>
           <input
+            id="image"
             type="url"
             name="image"
             value={formData.image}
@@ -103,8 +106,9 @@ const AddProductForm = ({ onProductAdded }) => {
         </div>
 
         <div>
-          <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Rating (0 - 5)</label>
+          <label htmlFor="rating" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Rating (0 - 5)</label>
           <input
+            id="rating"
             type="number"
             step="0.1"
             name="rating"

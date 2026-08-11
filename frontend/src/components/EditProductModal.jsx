@@ -70,8 +70,9 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Title</label>
+            <label htmlFor="edit-title" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Title</label>
             <input
+              id="edit-title"
               type="text"
               name="title"
               value={formData.title}
@@ -82,7 +83,9 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
           </div>
 
           <div>
-<label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Price ($)</label>            <input
+            <label htmlFor="edit-price" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Price ($)</label>
+            <input
+              id="edit-price"
               type="number"
               step="0.01"
               name="price"
@@ -94,8 +97,9 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Image URL</label>
+            <label htmlFor="edit-image" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Image URL</label>
             <input
+              id="edit-image"
               type="url"
               name="image"
               value={formData.image}
@@ -106,8 +110,9 @@ const EditProductModal = ({ product, onClose, onProductUpdated }) => {
           </div>
 
           <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Rating (0 - 5)</label>
+            <label htmlFor="edit-rating" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '4px', color: 'var(--text-main)' }}>Rating (0 - 5)</label>
             <input
+              id="edit-rating"
               type="number"
               step="0.1"
               name="rating"
